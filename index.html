@@ -42,10 +42,10 @@ async function refreshAuth(){
  document.getElementById('account').textContent=currentUser?'مسجل: '+currentUser.email:'غير مسجل الدخول';
  document.getElementById('loginBtn').textContent=currentUser?'تسجيل الخروج':'دخول / حساب جديد';
 }
-async function orderProduct(id,name){
+async function orderProduct(id,name,price){
  if(!currentUser){document.getElementById('authModal').style.display='grid';return}
  const account=prompt('أدخل معرّف حسابك في '+name);if(!account)return;
- const {error}=await db.from('orders').insert({user_id:currentUser.id,product_id:id,account_id:account,amount:0,status:'pending'});
+ const {error}=await db.from('orders').insert({user_id:currentUser.id,product_id:id,account_id:account,amount:Number(price),status:'pending'});
  msg(error?'تعذر إرسال الطلب: '+error.message:'تم إرسال الطلب للمراجعة. لا يعني ذلك تنفيذ الشحن تلقائياً.');
 }
 document.getElementById('loginBtn').onclick=async()=>{if(currentUser){await db.auth.signOut();await refreshAuth()}else document.getElementById('authModal').style.display='grid'};
