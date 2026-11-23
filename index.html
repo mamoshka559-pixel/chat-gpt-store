@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#090b14"><title>Chat-GPT Store | متجر الشحن</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root{color-scheme:dark;--bg:#090b14;--panel:#121727;--line:#252d43;--text:#f4f6ff;--muted:#9ba6c2;--a:#8b5cf6;--b:#16d9c2}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 85% 0%,#282052 0,transparent 35%),var(--bg);color:var(--text);font-family:system-ui,Tahoma,Arial}
+header{position:sticky;top:0;background:#090b14eF;backdrop-filter:blur(14px);border-bottom:1px solid var(--line);padding:14px 5%;display:flex;align-items:center;justify-content:space-between;z-index:5}
+.brand{font-size:21px;font-weight:900}.brand span{color:var(--b)}button{border:0;border-radius:12px;padding:11px 16px;background:linear-gradient(120deg,var(--a),#5b7cfa);color:white;font-weight:700;cursor:pointer}
+main{max-width:1100px;margin:auto;padding:28px 18px}.hero{padding:34px 24px;border:1px solid #5542a0;border-radius:24px;background:linear-gradient(120deg,#211b42,#111a2b);margin-bottom:24px}.hero h1{font-size:clamp(26px,5vw,42px);margin:0 0 10px}.hero p,.muted{color:var(--muted);line-height:1.8}
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between;margin:22px 0}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px}.card{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:18px}.icon{font-size:32px}.price{color:var(--b);font-weight:900;font-size:20px}.small{font-size:13px;color:var(--muted)}input,select{width:100%;padding:12px;border-radius:10px;border:1px solid var(--line);background:#0b1020;color:white;margin:6px 0 12px}.modal{position:fixed;inset:0;background:#000b;display:none;place-items:center;padding:18px;z-index:9}.modal .card{width:min(420px,100%)}.close{float:left;background:#30384e}#status{margin:12px 0;color:var(--b);min-height:22px}footer{text-align:center;color:var(--muted);padding:30px}
+</style></head>
+<body>
+<header><div class="brand">CHAT<span>-GPT</span> STORE</div><div><button id="loginBtn">دخول / حساب جديد</button></div></header>
+<main><section class="hero"><h1>كل شحناتك بمكان واحد</h1><p>متجر شحن تطبيقات اللايف والدردشة. اختر التطبيق والباقة، وأرسل طلبك بسهولة.</p><button onclick="document.getElementById('products').scrollIntoView({behavior:'smooth'})">تصفح التطبيقات</button></section>
+<div class="toolbar"><div><h2 style="margin:0">التطبيقات والباقات</h2><div class="small">الأسعار المعروضة يحددها المتجر</div></div><div id="account" class="small">غير مسجل الدخول</div></div>
+<div id="status"></div><section id="products" class="grid"><article class="card"><div class="icon">⌛</div><b>جاري تحميل المنتجات</b></article></section>
+<section class="card" style="margin-top:24px"><h3>طريقة الطلب</h3><p class="muted">سجّل الدخول، اختر الباقة، ثم أدخل معرّف حسابك داخل التطبيق. ستظهر حالة الطلب في حسابك بعد الإرسال.</p><p class="small">تنبيه: تنفيذ الشحن الفعلي يحتاج ربطاً موثقاً مع المورّد، وهذه النسخة لا تنفّذ الشحن تلقائياً.</p></section>
+</main><footer>© Chat-GPT Store</footer>
+<div class="modal" id="authModal"><div class="card"><button class="close" id="closeModal">إغلاق</button><h2>حسابك</h2><label>البريد الإلكتروني</label><input id="email" type="email" placeholder="name@example.com"><label>كلمة المرور</label><input id="password" type="password" placeholder="••••••••"><button id="signIn">تسجيل الدخول</button> <button id="signUp" style="background:#26334c">إنشاء حساب</button><div id="authMsg" class="small"></div></div></div>
+<script>
+const SUPABASE_URL='https://nugcfruxburbeaexpcgt.supabase.co';
+const SUPABASE_KEY='sb_publishable_6LtPI4c-JGPlxWYZ0AExPQ_2vjyZ49u';
+const db=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+const statusEl=document.getElementById('status');
+let currentUser=null;
+const icons={'Poppo':'🎤','YoHo':'🎧','Mico':'📹','Chamet':'💬','Tango':'🎵','Bigo':'📺','StarMaker':'🎙️','SUGO':'💌'};
+function msg(t){statusEl.textContent=t}
+async function loadProducts(){
+ const root=document.getElementById('products');
+ const {data,error}=await db.from('products').select('id,name,description,category,price,image_url,is_active').eq('is_active',true).order('name');
+ if(error){root.innerHTML='<div class="card">تعذر تحميل المنتجات حالياً. تأكد من إعدادات الوصول وسياسات قاعدة البيانات.</div>';return}
+ if(!data?.length){root.innerHTML='<div class="card">لا توجد باقات منشورة حالياً. ستظهر هنا بعد إضافتها من لوحة الإدارة.</div>';return}
+ root.innerHTML=data.map(p=>'<article class="card"><div class="icon">'+(icons[p.name]||'📦')+'</div><h3>'+esc(p.name)+'</h3><p class="muted">'+esc(p.description||'شحن رصيد')+'</p><div class="price">'+Number(p.price||0).toLocaleString('ar')+' ل.س</div><button style="width:100%;margin-top:14px" onclick="orderProduct(\''+p.id+'\',\''+escAttr(p.name)+'\')">اطلب الآن</button></article>').join('');
+}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function escAttr(s){return String(s).replace(/\\/g,'\\\\').replace(/'/g,"\\'")}
+async function refreshAuth(){
+ const {data}=await db.auth.getUser();currentUser=data.user||null;
+ document.getElementById('account').textContent=currentUser?'مسجل: '+currentUser.email:'غير مسجل الدخول';
+ document.getElementById('loginBtn').textContent=currentUser?'تسجيل الخروج':'دخول / حساب جديد';
+}
+async function orderProduct(id,name){
+ if(!currentUser){document.getElementById('authModal').style.display='grid';return}
+ const account=prompt('أدخل معرّف حسابك في '+name);if(!account)return;
+ const {error}=await db.from('orders').insert({user_id:currentUser.id,product_id:id,account_id:account,amount:0,status:'pending'});
+ msg(error?'تعذر إرسال الطلب: '+error.message:'تم إرسال الطلب للمراجعة. لا يعني ذلك تنفيذ الشحن تلقائياً.');
+}
+document.getElementById('loginBtn').onclick=async()=>{if(currentUser){await db.auth.signOut();await refreshAuth()}else document.getElementById('authModal').style.display='grid'};
+document.getElementById('closeModal').onclick=()=>document.getElementById('authModal').style.display='none';
+document.getElementById('signIn').onclick=async()=>{const {error}=await db.auth.signInWithPassword({email:email.value,password:password.value});document.getElementById('authMsg').textContent=error?.message||'تم تسجيل الدخول';if(!error){document.getElementById('authModal').style.display='none';await refreshAuth()}};
+document.getElementById('signUp').onclick=async()=>{const {error}=await db.auth.signUp({email:email.value,password:password.value});document.getElementById('authMsg').textContent=error?.message||'تم إنشاء الحساب. تحقق من بريدك إذا طُلب ذلك.'};
+db.auth.onAuthStateChange(()=>refreshAuth());refreshAuth();loadProducts();
+</script></body></html>
