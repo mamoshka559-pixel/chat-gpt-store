@@ -41,6 +41,27 @@ body{background:#f5f5f7;color:#17151b}
 #catalog .product p{color:#77717f}#catalog .product .price{color:#6650a3}#catalog .product button{background:linear-gradient(110deg,#30235f,#51408e);color:#fff;border-color:#6656a8}
 .mobile{background:linear-gradient(110deg,#2d255e,#19143b);border-top:1px solid #57489b;box-shadow:0 -5px 20px #0002}.mobile a{color:#fff}.mobile a:active,.mobile a:focus{color:#f4d77e}
 @media(max-width:420px){#sections .tile{min-height:110px}#catalog .product{background:#fff}}
+
+/* Palette correction: Abu Hassan is the layout reference only */
+body{background:#070707;color:#f4f1e9}
+.header{background:linear-gradient(110deg,#080808,#17130b);border-bottom:1px solid #a78335}
+.header .brand .stor{color:#f5f0e5}.header .mark{background:#0b0b0b;border-color:#d1a64d;color:#e6bd5c;box-shadow:0 0 18px #a77ce31c,0 0 7px #b38bf51a}
+.header .secondary{background:#121212;color:#e7c15d;border-color:#9b762f}
+.adBoard{border-color:#b28a3a;background:radial-gradient(ellipse at 12% 50%,#61408025,transparent 44%),linear-gradient(110deg,#050505,#15120c 55%,#050505);box-shadow:inset 0 0 24px #b38b3a0a,0 3px 14px #0005}
+.adBoard .adMark{background:linear-gradient(145deg,#f0d27a,#946a24);color:#100d07;border-color:#e2bc60;box-shadow:0 0 12px #b28b5028}
+.adBoard b{color:#e9c663}.adBoard p{color:#b9b2a6}.adTag{background:#17130a;color:#e2bd62;border-color:#aa8238}
+.announcement{background:#111;color:#f2eadb;border-color:#9c762d;box-shadow:0 3px 12px #0005}.announcement .stars{color:#e5bd59}
+.storeSearch{background:#0d0d0d;color:#eee;border-color:#a88437}.storeSearch::placeholder{color:#999}.storeSearch:focus{border-color:#c7a452;box-shadow:0 0 0 3px #b18b5a22}
+#sections .tile{background:linear-gradient(145deg,#19140c,#080808);border:1px solid #9e7b37;color:#f5f1e5;box-shadow:0 2px 8px #0008,0 0 12px #a47cdb0b;min-height:110px;border-radius:16px}
+#sections .tile:hover{border-color:#e1ba5b;box-shadow:0 3px 12px #0009,0 0 13px #9c75d91b}
+#sections .tileIcon{background:linear-gradient(145deg,#201a12,#080808);border:1px solid #b38c43;color:#f0d074;box-shadow:inset 0 0 13px #9a76d817,0 0 8px #b58b5220}
+#sections .tileText b{color:#f2d279}
+#catalog .product{background:linear-gradient(155deg,#17140e,#090909);color:#eee8dd;border-color:#78602b;box-shadow:0 2px 10px #0008,0 0 12px #8e70b70a}
+#catalog .product .icon{background:linear-gradient(145deg,#211a12,#080808);color:#e6bd5a;box-shadow:inset 0 0 14px #a27ada13}
+#catalog .product p{color:#aaa398}#catalog .product .price{color:#e4bd5a}#catalog .product button{background:linear-gradient(110deg,#20180b,#3a2b14);color:#f0d078;border-color:#a7823a}
+.mobile{background:linear-gradient(110deg,#080808,#17130b);border-top:1px solid #9e792f;box-shadow:0 -5px 20px #0008}.mobile a{color:#e7d8b5}.mobile a:active,.mobile a:focus{color:#f4d77e}
+.sidePanel{background:#0e0d0b;border-left:1px solid #a78036}
+.authBox{background:#0e0d0b;border-color:#a78036}.authBox input{border-color:#514329;background:#080808}.authSwitch{color:#e2bd62}
 </style></head><body>
 <header class="header"><div class="wrap nav"><a class="brand" href="#"><span class="mark">♛A</span><span><b class="apk shine">APK</b> <b class="stor">STOR</b></span></a><nav class="links" aria-label="روابط المتجر"></nav><div class="headActions"><button class="btn" id="accountBtn" onclick="openAuth()">تسجيل الدخول</button><button class="secondary" id="menuBtn" type="button" onclick="toggleSideMenu()" aria-label="القائمة">☰</button></div></div></header>
 <div class="sideMenu" id="sideMenu" onclick="if(event.target===this)toggleSideMenu()"><aside class="sidePanel"><button class="menuClose" onclick="toggleSideMenu()">×</button><h3 class="shine">قائمة APK STOR</h3><a href="#sections" onclick="toggleSideMenu()">الأقسام</a><button class="secondary" id="sideAccount" onclick="openAuth()">تسجيل الدخول</button><button class="secondary" id="sideLogout" style="display:none" onclick="accountAction()">تسجيل الخروج</button></aside></div><main class="wrap"><section class="adBoard" aria-label="لوحة الإعلانات"><div class="adMark">✦</div><div><b>عروض أبو حسن ستور</b><p>تابع جديد العروض والشحنات والخدمات الرقمية</p></div><span class="adTag">عروض</span></section><div class="announcement"><span class="stars">★ ❤️ 💜</span><span>بسم الله الرحمن الرحيم — أهلاً بكم في APK STOR، متجر الخدمات الرقمية</span></div><div class="searchWrap"><input id="storeSearch" class="storeSearch" type="search" placeholder="ابحث عن قسم أو منتج..." aria-label="بحث المنتجات والأقسام"></div>
